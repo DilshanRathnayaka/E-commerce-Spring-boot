@@ -1,0 +1,14 @@
+image: atlassian/default-image:latest
+
+pipelines:
+  branches:
+    development:
+      - step:
+          name: Build and Push Backend
+          services:
+            - docker
+          script:
+            - echo "$DOCKER_HUB_PASSWORD" | docker login -u $DOCKER_HUB_USERNAME --password-stdin
+            - docker build -t $DOCKER_HUB_USERNAME/spring-ecommerce-backend:dev-$BITBUCKET_COMMIT .
+            - docker push $DOCKER_HUB_USERNAME/spring-ecommerce-backend:dev-$BITBUCKET_COMMIT
+
